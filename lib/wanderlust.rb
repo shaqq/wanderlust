@@ -2,6 +2,21 @@ require "wanderlust/version"
 
 module Wanderlust
   class << self
+    def get_mysql_connection!
+      begin
+        @conn = ::ActiveRecord::Base.connection
+      rescue ::ActiveRecord::ConnectionNotEstablished => e
+        puts <<-EOF
+
+Wanderlust will borrow an existing ActiveRecord connection as opposed to creating
+and managing a new one. Please make sure that `Wanderlust.ensure_timezones` is called after
+`ActiveRecord::Base.establish_connection`
+
+        EOF
+        raise e
+      end
+    end
+
     def safe_zone?
       unless %w(test development dev local).include? ENV['RACK_ENV']
         puts <<-EOF
