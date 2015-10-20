@@ -2,6 +2,13 @@ require "wanderlust/version"
 
 module Wanderlust
   class << self
+
+    def lacking_mysql_timezone_support?
+      # No "true" way to determine this, so let's check for at least
+      # 100 time zones in MySQL. Open to suggestions!
+      @conn.execute("select count(*) from mysql.time_zone").first.first < 100
+    end
+
     def get_mysql_connection!
       begin
         @conn = ::ActiveRecord::Base.connection
