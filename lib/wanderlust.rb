@@ -2,6 +2,26 @@ require "wanderlust/version"
 
 module Wanderlust
   class << self
+    def ensure_timezones
+      return unless safe_zone?
+
+      get_mysql_connection!
+
+      import_timezones! if lacking_mysql_timezone_support?
+    end
+
+    def import_timezones!
+      sql_file_location = "#{Dir.pwd}/lib/wanderlust/timezones.sql"
+      sql = File.read(sql_file_location)
+      statements = sql.split(';')
+      statements.pop # empty line at the end
+
+      ::ActiveRecord::Base.transaction do
+        statements.each do |statement|
+          @conn.execute(statement)
+        end
+      end
+    end
 
     def lacking_mysql_timezone_support?
       # No "true" way to determine this, so let's check for at least
