@@ -11,7 +11,7 @@ module Wanderlust
     end
 
     def import_timezones!
-      sql_file_location = "#{Dir.pwd}/lib/wanderlust/timezones.sql"
+      sql_file_location = "#{File.dirname(__FILE__)}/wanderlust/timezones.sql"
       sql = File.read(sql_file_location)
       statements = sql.split(';')
       statements.pop # empty line at the end
