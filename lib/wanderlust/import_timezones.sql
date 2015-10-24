@@ -1,6 +1,6 @@
 LOCK TABLES  mysql.time_zone  WRITE;
 
-INSERT INTO  mysql.time_zone  (`Time_zone_id`, `Use_leap_seconds`)
+INSERT INTO mysql.time_zone  (`Time_zone_id`, `Use_leap_seconds`)
 VALUES
   (1,'N'),
   (2,'N'),
