@@ -12,19 +12,17 @@ This gem is compatible with at least MySQL 5.6.19.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile in the development or test groups:
 
 ```ruby
-gem 'wanderlust'
+group :development, :test do
+  gem 'wanderlust'
+end
 ```
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install wanderlust
 
 ## Usage
 
