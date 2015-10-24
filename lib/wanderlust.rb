@@ -36,8 +36,8 @@ module Wanderlust
         puts <<-EOF
 
 Wanderlust will borrow an existing ActiveRecord connection as opposed to creating
-and managing a new one. Please make sure that `Wanderlust.ensure_timezones` is called after
-`ActiveRecord::Base.establish_connection`
+and managing a new one. Please make sure that `ActiveRecord::Base.establish_connection`
+is called before using Wanderlust
 
         EOF
         raise e
@@ -48,12 +48,11 @@ and managing a new one. Please make sure that `Wanderlust.ensure_timezones` is c
       unless %w(test development dev local).include? ENV['RACK_ENV']
         puts <<-EOF
 
-Careful! Since Wanderlust inserts a bunch of timezone data into
-your MySQL instance, it should only be used in your local test or
-development environments.
+Careful! Since Wanderlust inserts a bunch of timezone data into your MySQL instance,
+it should only be used in your local test or development environments.
 
         EOF
-        return false
+        raise StandardError, "Not in a `test`, `development`, `dev`, or `local` environment"
       end
 
       unless defined?(::ActiveRecord)
@@ -66,7 +65,7 @@ Sorry! Wanderlust only works with ActiveRecord at the moment
 Submit a PR on Github if you'd like more robust support
 
         EOF
-        return false
+        raise NameError, "ActiveRecord not defined"
       end
 
       return true
