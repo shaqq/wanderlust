@@ -10,8 +10,29 @@ module Wanderlust
       import_timezones! if lacking_mysql_timezone_support?
     end
 
+    def cleanup
+      return unless safe_zone?
+
+      get_mysql_connection!
+
+      delete_timezones!
+    end
+
     def import_timezones!
       sql_file_location = "#{File.dirname(__FILE__)}/wanderlust/import_timezones.sql"
+      sql = File.read(sql_file_location)
+      statements = sql.split(';')
+      statements.pop # empty line at the end
+
+      ::ActiveRecord::Base.transaction do
+        statements.each do |statement|
+          @conn.execute(statement)
+        end
+      end
+    end
+
+    def delete_timezones!
+      sql_file_location = "#{File.dirname(__FILE__)}/wanderlust/delete_timezones.sql"
       sql = File.read(sql_file_location)
       statements = sql.split(';')
       statements.pop # empty line at the end
