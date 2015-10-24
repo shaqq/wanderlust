@@ -1,6 +1,6 @@
 # Wanderlust
 
-A gem to enable MySQL timezone support for your ActiveRecord specs. It's mainly for your dev and CI environments, as it will import a set of timezones into your MySQL instance. __This should not be used in Production.__
+A convenient way to enable MySQL timezone support for your ActiveRecord specs. It's mainly for your dev and CI environments, as it will import a set of timezones into your MySQL instance. __This should not be used in Production.__
 
 If you'd like to get MySQL timezone support on your Mac without using Wanderlust, this should do the trick:
 
